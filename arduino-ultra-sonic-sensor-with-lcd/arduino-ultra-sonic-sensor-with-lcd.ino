@@ -4,9 +4,6 @@
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); // Set the LCD I2C address
 
 // Variables
-long counter = 0;
-int feature_time_delay = 200; // secondx
-long feature_timer = millis();
 long duration; // variable for the duration of sound wave travel
 int distance;  // variable for the distance measurement
 int distanceOldState;
