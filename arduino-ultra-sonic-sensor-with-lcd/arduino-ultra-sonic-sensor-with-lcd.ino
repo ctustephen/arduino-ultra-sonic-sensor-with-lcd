@@ -2,6 +2,7 @@
 #include <LiquidCrystal_I2C.h>
 
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); // Set the LCD I2C address
+// LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 // Variables
 long duration; // variable for the duration of sound wave travel
@@ -11,6 +12,7 @@ int distanceOldState;
 // PINS
 int trigPin = A0;
 int echoPin = A1;
+int buzzerPin = A2;
 
 void setup()
 {
@@ -19,6 +21,10 @@ void setup()
 
     pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
     pinMode(echoPin, INPUT);  // Sets the echoPin as an INPUT
+
+    pinMode(buzzerPin, OUTPUT);
+
+    lcd.print("Ready");
 }
 void loop()
 {
@@ -41,9 +47,20 @@ void loop()
 
         snprintf(ch, sizeof(ch), "Distance %dcm", distance);
 
-        lcd.clear();
-        lcd.setCursor(0, 0);
-        lcd.print(ch);
+        if (distance >= 60)
+        {
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Object detected!");
+            digitalWrite(buzzerPin, LOW);
+        }
+        else
+        {
+            digitalWrite(buzzerPin, HIGH);
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print(ch);
+        }
 
         delay(300);
     }
