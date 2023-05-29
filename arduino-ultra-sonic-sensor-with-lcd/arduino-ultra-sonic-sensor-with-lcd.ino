@@ -1,8 +1,4 @@
-#include <Wire.h>
-#include <LiquidCrystal_I2C.h>
-
-LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE); // Set the LCD I2C address
-// LiquidCrystal_I2C lcd(0x27, 20, 4);
+#include <Arduino.h>
 
 // Variables
 long duration; // variable for the duration of sound wave travel
@@ -12,19 +8,15 @@ int distanceOldState;
 // PINS
 int trigPin = A0;
 int echoPin = A1;
-int buzzerPin = A2;
+int relay = A2;
 
 void setup()
 {
-    lcd.begin(16, 2);
-    lcd.setCursor(0, 0);
 
     pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
     pinMode(echoPin, INPUT);  // Sets the echoPin as an INPUT
 
-    pinMode(buzzerPin, OUTPUT);
-
-    lcd.print("Ready");
+    pinMode(relay, OUTPUT);
 }
 void loop()
 {
@@ -43,23 +35,13 @@ void loop()
 
     if (distance != distanceOldState)
     {
-        char ch[20];
-
-        snprintf(ch, sizeof(ch), "Distance %dcm", distance);
-
         if (distance >= 60)
         {
-            lcd.clear();
-            lcd.setCursor(0, 0);
-            lcd.print("Object detected!");
-            digitalWrite(buzzerPin, LOW);
+            digitalWrite(relay, LOW);
         }
         else
         {
-            digitalWrite(buzzerPin, HIGH);
-            lcd.clear();
-            lcd.setCursor(0, 0);
-            lcd.print(ch);
+            digitalWrite(relay, HIGH);
         }
 
         delay(300);
