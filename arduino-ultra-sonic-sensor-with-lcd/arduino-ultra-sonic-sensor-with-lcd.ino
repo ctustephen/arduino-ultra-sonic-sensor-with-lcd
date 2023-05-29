@@ -12,7 +12,7 @@ int relay = A2;
 
 void setup()
 {
-
+    Serial.begin(9600);
     pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
     pinMode(echoPin, INPUT);  // Sets the echoPin as an INPUT
 
@@ -33,18 +33,16 @@ void loop()
     // Calculating the distance
     distance = duration * 0.034 / 2; // Speed of sound wave divided by 2 (go and back)
 
-    if (distance != distanceOldState)
+    if (distance <= 20)
     {
-        if (distance >= 60)
-        {
-            digitalWrite(relay, LOW);
-        }
-        else
-        {
-            digitalWrite(relay, HIGH);
-        }
-
-        delay(300);
+        Serial.println("TRIGGER");
+        digitalWrite(relay, HIGH);
+        delay(3000);
     }
-    distanceOldState = distance;
+    else
+    {
+        Serial.println("CLOSE");
+        digitalWrite(relay, LOW);
+        delay(100);
+    }
 }
